@@ -1,7 +1,7 @@
 from collections import defaultdict
 import re
 
-with open('/Users/joakimkoljonen/src/adventofcode/21.input', 'r') as file:
+with open('/Users/joakimkoljonen/src/adventofcode/2017/21.input', 'r') as file:
     input = file.read()
 
 test_input = '''../.# => ##./#../...

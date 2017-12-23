@@ -2,7 +2,7 @@ from numpy import roots
 from math import sqrt
 from collections import defaultdict, namedtuple
 
-with open('/Users/joakimkoljonen/src/adventofcode/20.input', 'r') as file:
+with open('/Users/joakimkoljonen/src/adventofcode/2017/20.input', 'r') as file:
     input = file.read()
 
 test_input = '''p=<-2,2,6>, v=< -1,0,-1>, a=< 2,0,0>

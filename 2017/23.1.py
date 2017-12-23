@@ -1,6 +1,6 @@
 from collections import defaultdict
 
-with open('/Users/joakimkoljonen/src/adventofcode/23.input', 'r') as file:
+with open('/Users/joakimkoljonen/src/adventofcode/2017/23.input', 'r') as file:
     input = file.read()
 
 instructions = [i.split(' ') for i in input.split('\n') if i != '']
