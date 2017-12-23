@@ -1,45 +1,7 @@
 from collections import defaultdict
-input = '''set i 31
-set a 1
-mul p 17
-jgz p p
-mul a 2
-add i -1
-jgz i -2
-add a -1
-set i 127
-set p 826
-mul p 8505
-mod p a
-mul p 129749
-add p 12345
-mod p a
-set b p
-mod b 10000
-snd b
-add i -1
-jgz i -9
-jgz a 3
-rcv b
-jgz b -1
-set f 0
-set i 126
-rcv a
-rcv b
-set p a
-mul p -1
-add p b
-jgz p 4
-snd a
-set a b
-jgz 1 3
-snd b
-set f 1
-add i -1
-jgz i -11
-snd a
-jgz f -16
-jgz a -19'''
+
+with open('/Users/joakimkoljonen/src/adventofcode/2017/18.input', 'r') as file:
+    input = file.read()
 
 test_input = '''set a 1
 add a 2
@@ -77,21 +39,21 @@ while pos < len(instructions):
             val = int(val)
         except:
             val = registers[val]
-    if(typ == 'snd'):
+    if typ == 'snd':
         recoverable = registers[reg]
-    elif(typ == 'set'):
+    elif typ == 'set':
         registers[reg] = val
-    elif(typ == 'add'):
+    elif typ == 'add':
         registers[reg] += val
-    elif(typ == 'mul'):
+    elif typ == 'mul':
         registers[reg] *= val
-    elif(typ == 'mod'):
+    elif typ == 'mod':
         registers[reg] %= val
-    elif(typ == 'rcv'):
+    elif typ == 'rcv':
         if registers[reg] != 0:
             print(recoverable)
             break
-    elif(typ == 'jgz'):
+    elif typ == 'jgz':
         if registers[reg] > 0:
             pos += val - 1
     pos += 1
