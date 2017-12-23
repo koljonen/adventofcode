@@ -68,8 +68,9 @@ WITH RECURSIVE Steps AS (
     UNION ALL
     SELECT Step + 1, GetNext.*
     FROM Steps
-    , LATERAL GetNext(RowNum, ColNum, Direction)    
+    , LATERAL GetNext(RowNum, ColNum, Direction)
 )
-SELECT string_agg(Letter, '' ORDER BY Step)
+SELECT
+    string_agg(Letter, '' ORDER BY Step) FILTER (WHERE Letter NOT IN ('|', '-', '+')) AS Part1,
+    COUNT(*) AS Part2
 FROM Steps
-WHERE Letter NOT IN ('|', '-', '+')
