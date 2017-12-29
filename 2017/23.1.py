@@ -15,7 +15,6 @@ def getval(registers, val):
 def run():
     cnt = 0
     registers = defaultdict(lambda: 0)
-    registers['a'] = 1
     
     pos = 0
     while 0 <= pos < len(instructions):
