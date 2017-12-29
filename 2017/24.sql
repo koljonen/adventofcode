@@ -22,26 +22,32 @@ UNION DISTINCT
 SELECT Parts[2], Parts[1]
 FROM Parts;
 
-CREATE FUNCTION BestBridge(_Score int DEFAULT 0, _FromNum int DEFAULT 0, _Used hstore DEFAULT '')
-RETURNS int
+CREATE FUNCTION BestBridge(
+    -- Part2[1] is the length, Part2[2] the score
+    INOUT Part2 int[] DEFAULT ARRAY[0,0],
+    _FromNum int DEFAULT 0,
+    _Used hstore DEFAULT ''
+)
 LANGUAGE SQL
 AS $$
 SELECT COALESCE(
     MAX(
         BestBridge(
-            _Score      := _Score + FromNum + ToNum,
+            Part2       := ARRAY[Part2[1] + 1, Part2[2] + FromNum + ToNum],
             _FromNum    := ToNum,
             _Used       := _Used || hstore(ARRAY[LEAST(FromNum, ToNum), GREATEST(FromNum, ToNum)]::text, '')
         )
     ),
-    _Score
+    Part2
 )
 FROM Components
 WHERE FromNum = _FromNum
 AND NOT _Used ? ARRAY[LEAST(FromNum, ToNum), GREATEST(FromNum, ToNum)]::text
 $$;
 
-SELECT *
-FROM BestBridge();
+SELECT
+    (BestBridge())[2] AS Part2,
+    -- Pretty haxxy – set the length to NULL so we'll just sort by score
+    (BestBridge(Part2 := ARRAY[NULL, 0]))[2] AS Ans1;
 
 ROLLBACK;
