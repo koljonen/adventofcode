@@ -1,3 +1,16 @@
+BEGIN;
+
+-- For some reason variadic calls to the built-in least/greatest don't work
+CREATE OR REPLACE FUNCTION public.least(variadic _nums int[])
+RETURNS int
+LANGUAGE SQL
+AS $$ SELECT MIN(unnest) FROM  unnest($1) $$;
+
+CREATE OR REPLACE FUNCTION public.greatest(variadic _nums int[])
+RETURNS int
+LANGUAGE SQL
+AS $$ SELECT MAX(unnest) FROM  unnest($1) $$;
+
 WITH Input(Input) AS ( VALUES
 ('116	1259	1045	679	1334	157	277	1217	218	641	1089	136	247	1195	239	834
 269	1751	732	3016	260	6440	5773	4677	306	230	6928	7182	231	2942	2738	3617
@@ -19,13 +32,7 @@ WITH Input(Input) AS ( VALUES
     SELECT regexp_split_to_array(regexp_split_to_table(Input, '\n'), '\t') AS Split
     FROM Input
 )
-SELECT SUM(
-    (
-        SELECT MAX(unnest::int)
-        FROM unnest(Split)
-    ) - (
-        SELECT MIN(unnest::int)
-        FROM unnest(Split)
-    )
-)
+SELECT SUM(public.greatest(variadic Split::int[]) - public.least(variadic Split::int[]))
 FROM Split;
+
+ROLLBACK;
