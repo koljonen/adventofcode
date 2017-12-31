@@ -4,3 +4,6 @@ for x, y in zip(input, input[1:] + input[0]):
     if x == y:
         ans = ans + int(x)
 print(ans)
+
+# Solution 2
+print(sum(int(x) for x, y in zip(input, input[1:] + input[0]) if x == y))
